@@ -1,3 +1,6 @@
+/* Wrapper Script for key press detection from :
+ * http://www.html5rocks.com/en/tutorials/canvas/notearsgame/
+ */
 $(function() {
   window.keydown = {};
   
