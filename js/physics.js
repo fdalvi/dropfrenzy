@@ -19,27 +19,70 @@ function Player (color) {
 
 // Creating class for Ledge
 function Ledge (x,y,length) {
-    this.x = type;
-    this.y = y;
-    this.height = 10;
-    this.width = length;
-    this.draw = function() {
-    	ctx.fillStyle = this.color;
-    	ctx.fillRect(this.x, this.y, this.width, this.height);
-    };
+	this.x = x;
+	this.y = y;
+	this.height = 10;
+	this.width = length;
+	this.color = "#A00";
+	this.draw = function() {
+		ctx.fillStyle = this.color;;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+	};
+	this.collides = function(somePlayer) {
+		// Check if the player(somePlayer) is ON the ledge
+		return this.x <= somePlayer.x + somePlayer.radius &&
+		this.x + this.width >= somePlayer.x &&
+		this.y <= somePlayer.y + somePlayer.radius &&
+		this.y + this.height >= somePlayer.y + somePlayer.radius;
+	}
 }
 
-var objects = [];
+// Create collection to hold all ledges on screen
+var ledges = [];
+
+// Create collection to hold all players on screen
+var players = [];
 var player = new Player("#00A");
+players.push(player);
+
+var ledge = new Ledge(0,100,200);
+ledges.push(ledge);
+ledge = new Ledge(200,165,200);
+ledges.push(ledge);
+ledge = new Ledge(0,220,250);
+ledges.push(ledge);
+ledge = new Ledge(300,220,200);
+ledges.push(ledge);
+ledge = new Ledge(100,280,200);
+ledges.push(ledge);
+
 
 var bounds = {
-	max: canvasWidth-player.radius,
-	min: player.radius
+	hMax: canvasWidth-player.radius,
+	hMin: player.radius,
+	vMax: canvasHeight-player.radius,
+	vMin: player.radius
 };
+
 
 function handleCollisions()
 {
+	var continueCheckCollisions = true;
+	ledges.forEach(function(currentLedge) {
+		if(continueCheckCollisions) {
+			if (currentLedge.collides(player)) {
+				player.y = currentLedge.y - player.radius;
+				currentLedge.color = "#00A";
+				player.canFall=false;
 
+				// Do not check with the rest of the ledges
+				continueCheckCollisions = false;
+			} else {
+				player.canFall=true;
+				currentLedge.color = "#A00";
+			}
+		}
+	});
 }
 
 function updateElements()
@@ -58,12 +101,12 @@ function updateElements()
 	}
 
 	// Checking for boundaries
-	if(player.x > bounds.max) {
-		player.x = bounds.max;
-	} else if(player.x < bounds.min) {
-		player.x = bounds.min;
+	if(player.x > bounds.hMax) {
+		player.x = bounds.hMax;
+	} else if(player.x < bounds.hMin) {
+		player.x = bounds.hMin;
 	}
-	if(player.y > canvasHeight-player.radius) {
+	if(player.y > bounds.vMax) {
 		player.y = 0;
 	}
 }
