@@ -41,7 +41,7 @@ function animate() {
 function renderCanvas()
 {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	player.draw(ctx);
+	player.draw();
 }
 
 //Keyboard Handling

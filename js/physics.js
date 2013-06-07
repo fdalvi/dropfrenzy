@@ -1,20 +1,36 @@
-var player = {
-	color: "#00A",
-	x: 10,
-	y: 20,
-	radius: 10,
-	canFall: true,
-	draw: function(context) {
-		context.fillStyle = this.color;
-		context.beginPath();
-		context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-		context.fillStyle = 'green';
-		context.fill();
-		context.lineWidth = 2;
-		context.strokeStyle = '#003300';
-		context.stroke();
-	}
-};
+// Creating class for Player
+function Player (color) {
+	this.color = color;
+	this.x = 10;
+	this.y =  20;
+	this.radius = 10;
+	this.canFall = true;
+	this.draw = function() {
+		ctx.fillStyle = this.color;
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+		ctx.fillStyle = 'green';
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = '#003300';
+		ctx.stroke();
+	};
+}
+
+// Creating class for Ledge
+function Ledge (x,y,length) {
+    this.x = type;
+    this.y = y;
+    this.height = 10;
+    this.width = length;
+    this.draw = function() {
+    	ctx.fillStyle = this.color;
+    	ctx.fillRect(this.x, this.y, this.width, this.height);
+    };
+}
+
+var objects = [];
+var player = new Player("#00A");
 
 var bounds = {
 	max: canvasWidth-player.radius,
