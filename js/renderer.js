@@ -1,18 +1,8 @@
-var ctx;
-var canvasWidth;
-var canvasHeight;
 var keys = [];
 var FPS = 30;
 
 // HTML5 onLoad event
 window.onload = function() {
-	// Grabbing reference to Canvas
-	var canvas = document.getElementById('game');
-
-    ctx = canvas.getContext('2d');
-	canvasWidth = parseInt(canvas.width);
-	canvasHeight = parseInt(canvas.height);
-
 	// Initialize Game
 	initGame(); 
 
