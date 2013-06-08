@@ -1,5 +1,7 @@
 var keys = [];
 var FPS = 30;
+var messageY = 800;
+var stopAnimation = false;
 
 // HTML5 onLoad event
 window.onload = function() {
@@ -29,11 +31,22 @@ window.requestAnimFrame = (function(callback) {
 })();
 
 function animate() {
-	requestAnimFrame(function() {
-		animate();
-	});
+	if(!stopAnimation) {
+		requestAnimFrame(function() {
+			animate();
+		});
+	}
+	else
+	{
+		ctx.font = 'bold 36px Exo';
+		ctx.fillStyle = "black";
+		
+		ctx.fillText("The End!", 150, messageY);
+	}
 
-	handleCollisions();
+	if(!gameEnded) {
+		handleCollisions();
+	}
 	updateElements();
 	renderCanvas();
 }
@@ -41,10 +54,26 @@ function animate() {
 function renderCanvas()
 {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	player.draw();
+	if(!gameEnded)
+		player.draw();
 	ledges.forEach(function(currentLedge) {
 		currentLedge.draw();
 	});
+	if(gameEnded)
+		gameEnd();
+}
+
+function gameEnd()
+{
+	ctx.font = 'bold 36px Exo';
+	ctx.fillStyle = "black";
+	if(messageY < 280) {
+		stopAnimation = true;
+	}
+	else {
+		ctx.fillText("The End!", 150, messageY);
+		messageY -= 2;
+	}
 }
 
 //Keyboard Handling

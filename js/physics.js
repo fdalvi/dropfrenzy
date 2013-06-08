@@ -1,6 +1,7 @@
 var gameSpeed = 2;
 var playerSpeed = 5;
 var lowestLedge = -1; // No Ledge
+var gameEnded = false;
 
 // Creating class for Player
 function Player (color) {
@@ -81,7 +82,7 @@ function updateElements()
 {
 	var ledgesOnScreen = [];
 	// Add new Ledges and remove ledges outside the board. Also, update their positions
-	if(lowestLedge < 540)
+	if(lowestLedge < 540 && !gameEnded)
 	{
 		lowestLedge = 600;
 		switch(Math.floor(Math.random()*4))
@@ -147,5 +148,8 @@ function updateElements()
 	}
 	if(player.y > bounds.vMax) {
 		player.y = bounds.vMax;
+	}
+	if(player.y + player.radius < 0) {
+		gameEnded = true;
 	}
 }
