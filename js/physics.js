@@ -1,3 +1,7 @@
+var gameSpeed = 2;
+var playerSpeed = 5;
+var lowestLedge = -1; // No Ledge
+
 // Creating class for Player
 function Player (color) {
 	this.color = color;
@@ -45,18 +49,6 @@ var players = [];
 var player = new Player("#00A");
 players.push(player);
 
-var ledge = new Ledge(0,100,200);
-ledges.push(ledge);
-ledge = new Ledge(200,165,200);
-ledges.push(ledge);
-ledge = new Ledge(0,220,250);
-ledges.push(ledge);
-ledge = new Ledge(300,220,200);
-ledges.push(ledge);
-ledge = new Ledge(100,280,200);
-ledges.push(ledge);
-
-
 var bounds = {
 	hMax: canvasWidth-player.radius,
 	hMin: player.radius,
@@ -87,17 +79,64 @@ function handleCollisions()
 
 function updateElements()
 {
+	var ledgesOnScreen = [];
+	// Add new Ledges and remove ledges outside the board. Also, update their positions
+	if(lowestLedge < 540)
+	{
+		lowestLedge = 600;
+		switch(Math.floor(Math.random()*4))
+		{
+			case 0:
+			// Gap on right
+			var ledge = new Ledge(0,600,200);
+			ledges.push(ledge);
+			break;
+			case 1:
+			// Gap in between
+			ledge = new Ledge(0,600,250);
+			ledges.push(ledge);
+			ledge = new Ledge(300,600,200);
+			ledges.push(ledge);
+			break;
+			case 2:
+			// Gap on left
+			ledge = new Ledge(200,600,200);
+			ledges.push(ledge);
+			break;
+			case 3:
+			// Gap on both sides
+			ledge = new Ledge(100,600,200);
+			ledges.push(ledge);
+			break;
+			default:
+		}
+	}
+
+	lowestLedge -= gameSpeed;
+	ledges.forEach(function(currentLedge) {
+		currentLedge.y -= gameSpeed;
+		if(currentLedge.y > -20) {
+			ledgesOnScreen.push(currentLedge);
+		}
+	});
+
+	ledges = [];
+	ledges = ledgesOnScreen.slice();
+	ledgesOnScreen = [];
+
 	//Updating player position
 	if (keydown.left) {
-		player.x -= 5;
+		player.x -= playerSpeed;
 	}
 
 	if (keydown.right) {
-		player.x += 5;
+		player.x += playerSpeed;
 	}
 
 	if (player.canFall) {
-		player.y += 5;
+		player.y += playerSpeed;
+	} else {
+		player.y -= gameSpeed;
 	}
 
 	// Checking for boundaries
@@ -107,6 +146,6 @@ function updateElements()
 		player.x = bounds.hMin;
 	}
 	if(player.y > bounds.vMax) {
-		player.y = 0;
+		player.y = bounds.vMax;
 	}
 }
