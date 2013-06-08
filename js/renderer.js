@@ -1,6 +1,6 @@
 var keys = [];
-var FPS = 30;
-var messageY = 800;
+var FPS = 60;
+var messageY = 620;
 var stopAnimation = false;
 
 // HTML5 onLoad event
@@ -31,18 +31,11 @@ window.requestAnimFrame = (function(callback) {
 })();
 
 function animate() {
-	if(!stopAnimation) {
+	//if(!stopAnimation) {
 		requestAnimFrame(function() {
 			animate();
 		});
-	}
-	else
-	{
-		ctx.font = 'bold 36px Exo';
-		ctx.fillStyle = "black";
-		
-		ctx.fillText("The End!", 150, messageY);
-	}
+	
 
 	if(!gameEnded) {
 		handleCollisions();
@@ -59,8 +52,16 @@ function renderCanvas()
 	ledges.forEach(function(currentLedge) {
 		currentLedge.draw();
 	});
+	drawScore();
 	if(gameEnded)
 		gameEnd();
+}
+
+function drawScore()
+{
+	ctx.font = 'bold 16px Exo';
+	ctx.fillStyle = "black";
+	ctx.fillText(score, 10, 20);
 }
 
 function gameEnd()
@@ -68,10 +69,11 @@ function gameEnd()
 	ctx.font = 'bold 36px Exo';
 	ctx.fillStyle = "black";
 	if(messageY < 280) {
+		ctx.fillText("The End!", 140, messageY);
 		stopAnimation = true;
 	}
 	else {
-		ctx.fillText("The End!", 150, messageY);
+		ctx.fillText("The End!", 140, messageY);
 		messageY -= 2;
 	}
 }

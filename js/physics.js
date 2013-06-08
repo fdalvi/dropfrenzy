@@ -35,10 +35,16 @@ function Ledge (x,y,length) {
 	};
 	this.collides = function(somePlayer) {
 		// Check if the player(somePlayer) is ON the ledge
-		return this.x <= somePlayer.x + somePlayer.radius &&
-		this.x + this.width >= somePlayer.x &&
-		this.y <= somePlayer.y + somePlayer.radius &&
-		this.y + this.height >= somePlayer.y + somePlayer.radius;
+		if(this.x <= somePlayer.x + somePlayer.radius && this.x + this.width >= somePlayer.x )	{
+			if(this.y <= somePlayer.y + somePlayer.radius && this.y + this.height >= somePlayer.y + somePlayer.radius) {
+				return true;
+			} else {
+				return ((somePlayer.y+somePlayer.radius < this.y) && ((somePlayer.y+somePlayer.radius+gameSpeed+score/1000) > this.y));
+			}
+
+		} else {
+			return false;
+		}
 	}
 }
 
@@ -63,7 +69,7 @@ function handleCollisions()
 	var continueCheckCollisions = true;
 	ledges.forEach(function(currentLedge) {
 		if(continueCheckCollisions) {
-			if (currentLedge.collides(player)) {
+			if(currentLedge.collides(player)) {
 				player.y = currentLedge.y - player.radius;
 				currentLedge.color = "#00A";
 				player.canFall=false;
@@ -115,7 +121,7 @@ function updateElements()
 
 	lowestLedge -= gameSpeed;
 	ledges.forEach(function(currentLedge) {
-		currentLedge.y -= gameSpeed;
+		currentLedge.y -= gameSpeed + score/1000;
 		if(currentLedge.y > -20) {
 			ledgesOnScreen.push(currentLedge);
 		}
@@ -126,18 +132,19 @@ function updateElements()
 	ledgesOnScreen = [];
 
 	//Updating player position
-	if (keydown.left) {
+	if(keydown.left) {
 		player.x -= playerSpeed;
 	}
 
-	if (keydown.right) {
+	if(keydown.right) {
 		player.x += playerSpeed;
 	}
 
 	if (player.canFall) {
+		score += playerSpeed;
 		player.y += playerSpeed;
 	} else {
-		player.y -= gameSpeed;
+		player.y -= gameSpeed + score/1000;
 	}
 
 	// Checking for boundaries
