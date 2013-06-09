@@ -87,38 +87,8 @@ function handleCollisions()
 function updateElements()
 {
 	var ledgesOnScreen = [];
-	// Add new Ledges and remove ledges outside the board. Also, update their positions
-	if(lowestLedge < 540 && !gameEnded)
-	{
-		lowestLedge = 600;
-		switch(Math.floor(Math.random()*4))
-		{
-			case 0:
-			// Gap on right
-			var ledge = new Ledge(0,600,200);
-			ledges.push(ledge);
-			break;
-			case 1:
-			// Gap in between
-			ledge = new Ledge(0,600,250);
-			ledges.push(ledge);
-			ledge = new Ledge(300,600,200);
-			ledges.push(ledge);
-			break;
-			case 2:
-			// Gap on left
-			ledge = new Ledge(200,600,200);
-			ledges.push(ledge);
-			break;
-			case 3:
-			// Gap on both sides
-			ledge = new Ledge(100,600,200);
-			ledges.push(ledge);
-			break;
-			default:
-		}
-	}
 
+	// Update all ledges positions
 	lowestLedge -= gameSpeed;
 	ledges.forEach(function(currentLedge) {
 		currentLedge.y -= gameSpeed + score/1000;
@@ -130,6 +100,39 @@ function updateElements()
 	ledges = [];
 	ledges = ledgesOnScreen.slice();
 	ledgesOnScreen = [];
+
+
+	// Add new Ledges and remove ledges outside the board. Also, update their positions
+	if(lowestLedge < 540 && !gameEnded)
+	{
+		lowestLedge = 620;
+		switch(Math.floor(Math.random()*4))
+		{
+			case 0:
+			// Gap on right
+			var ledge = new Ledge(0,620,200);
+			ledges.push(ledge);
+			break;
+			case 1:
+			// Gap in between
+			ledge = new Ledge(0,620,250);
+			ledges.push(ledge);
+			ledge = new Ledge(300,620,200);
+			ledges.push(ledge);
+			break;
+			case 2:
+			// Gap on left
+			ledge = new Ledge(200,620,200);
+			ledges.push(ledge);
+			break;
+			case 3:
+			// Gap on both sides
+			ledge = new Ledge(100,620,200);
+			ledges.push(ledge);
+			break;
+			default:
+		}
+	}
 
 	//Updating player position
 	if(keydown.left) {

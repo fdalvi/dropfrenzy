@@ -37,10 +37,11 @@ function animate() {
 		});
 	
 
+	
+	updateElements();
 	if(!gameEnded) {
 		handleCollisions();
 	}
-	updateElements();
 	renderCanvas();
 }
 
