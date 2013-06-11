@@ -1,7 +1,6 @@
-var gameSpeed = 2;
-var playerSpeed = 5;
-var lowestLedge = -1; // No Ledge
-var gameEnded = false;
+var gameSpeed;
+var lowestLedge;
+//var gameEnded = false;
 
 // Creating class for Player
 function Player (color) {
@@ -10,6 +9,7 @@ function Player (color) {
 	this.y =  20;
 	this.radius = 10;
 	this.canFall = true;
+	this.playerSpeed = 5;
 	this.draw = function() {
 		ctx.fillStyle = this.color;
 		ctx.beginPath();
@@ -48,21 +48,37 @@ function Ledge (x,y,length) {
 	}
 }
 
+
+
 // Create collection to hold all ledges on screen
 var ledges = [];
 
 // Create collection to hold all players on screen
 var players = [];
-var player = new Player("#00A");
-players.push(player);
+var player;
+//players.push(player);
 
-var bounds = {
-	hMax: canvasWidth-player.radius,
-	hMin: player.radius,
-	vMax: canvasHeight-player.radius,
-	vMin: player.radius
-};
+var bounds; 
 
+function initPhysics() {
+	gameSpeed = 2;
+ 	lowestLedge = -1; // No Ledge
+
+	// Create collection to hold all ledges on screen
+	ledges = [];
+
+	// Create collection to hold all players on screen
+	players = [];
+	player = new Player("#00A");
+	players.push(player);
+	bounds = {
+		hMax: canvasWidth-player.radius,
+		hMin: player.radius,
+		vMax: canvasHeight-player.radius,
+		vMin: player.radius
+	};
+
+}
 
 function handleCollisions()
 {
@@ -136,16 +152,16 @@ function updateElements()
 
 	//Updating player position
 	if(keydown.left) {
-		player.x -= playerSpeed;
+		player.x -= player.playerSpeed;
 	}
 
 	if(keydown.right) {
-		player.x += playerSpeed;
+		player.x += player.playerSpeed;
 	}
 
 	if (player.canFall) {
-		score += playerSpeed;
-		player.y += playerSpeed;
+		score += player.playerSpeed;
+		player.y += player.playerSpeed;
 	} else {
 		player.y -= gameSpeed + score/1000;
 	}
@@ -161,5 +177,13 @@ function updateElements()
 	}
 	if(player.y + player.radius < 0) {
 		gameEnded = true;
+	}
+}
+
+function noLedgesLeft() {
+	if(ledges.length == 0) {
+		return true;
+	} else {
+		return false;
 	}
 }

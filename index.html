@@ -12,8 +12,13 @@
 	</script>
 </head>
 <body>
-
-	<div align="center">
+	<div id="startSelection" align="center">
+		<button onclick="startGame()" type="button">Start Game</button>
+	</div>
+	<div id="restartSelection" align="center">
+		<button onclick="startGame()" type="button">Restart Game</button>
+	</div>
+	<div id="gameBoard" align="center">
 		<canvas id="game" width="400" height="600" style="border:2px solid #000000;">
 			Your browser does not support the HTML5 canvas tag.
 		</canvas>

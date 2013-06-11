@@ -1,10 +1,16 @@
 var keys = [];
 var FPS = 60;
 var messageY = 620;
-var stopAnimation = false;
+var endAnimationFinished;
 
-// HTML5 onLoad event
 window.onload = function() {
+	$("#gameBoard").hide();
+	$("#restartSelection").hide();
+}
+function startGame() {
+	$("#startSelection").hide();
+	$("#restartSelection").hide();
+	$("#gameBoard").show();
 	// Initialize Game
 	initGame(); 
 
@@ -12,14 +18,18 @@ window.onload = function() {
 	window.addEventListener('keydown',handleKeyDown,true); 
 	window.addEventListener('keyup',handleKeyUp,true);
 	
-
-
 	// Run game loop
 	animate();
 }
 
 function initGame(){
-	
+	messageY = 620;
+	keys = [];
+	gameEnded = false;
+	score = 0;
+	endAnimationFinished = false;
+
+	initPhysics();
 }
 
 
@@ -31,10 +41,13 @@ window.requestAnimFrame = (function(callback) {
 })();
 
 function animate() {
-	//if(!stopAnimation) {
+	if(!(gameEnded && noLedgesLeft() && endAnimationFinished)) {
 		requestAnimFrame(function() {
 			animate();
 		});
+	} else { 
+		$("#restartSelection").show();
+	}
 	
 
 	
@@ -71,7 +84,7 @@ function gameEnd()
 	ctx.fillStyle = "black";
 	if(messageY < 280) {
 		ctx.fillText("The End!", 140, messageY);
-		stopAnimation = true;
+		endAnimationFinished = true;
 	}
 	else {
 		ctx.fillText("The End!", 140, messageY);
