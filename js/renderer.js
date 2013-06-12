@@ -2,10 +2,23 @@ var keys = [];
 var FPS = 60;
 var messageY = 620;
 var endAnimationFinished;
+var gamePaused;
 
 window.onload = function() {
 	$("#gameBoard").hide();
 	$("#restartSelection").hide();
+
+	$(document).bind('keydown', 'space', function () {
+		if(!gameEnded) {
+			if(gamePaused) {
+				gamePaused = false;
+				animate();
+			} else {
+				gamePaused = true;
+			}
+		}
+
+	});
 }
 function startGame() {
 	$("#startSelection").hide();
@@ -26,6 +39,7 @@ function initGame(){
 	messageY = 620;
 	keys = [];
 	gameEnded = false;
+	gamePaused = false;
 	score = 0;
 	endAnimationFinished = false;
 
@@ -42,15 +56,18 @@ window.requestAnimFrame = (function(callback) {
 
 function animate() {
 	if(!(gameEnded && noLedgesLeft() && endAnimationFinished)) {
-		requestAnimFrame(function() {
-			animate();
-		});
+		if(!gamePaused) {
+			requestAnimFrame(function() {
+				animate();
+			});
+
+		}
 	} else { 
 		$("#restartSelection").show();
 	}
-	
 
-	
+
+
 	updateElements();
 	if(!gameEnded) {
 		handleCollisions();
