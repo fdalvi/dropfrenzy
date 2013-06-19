@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
+	<!--link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'-->
 	<script type="text/javascript">
 	var ctx;
 	var canvasWidth;
@@ -19,11 +19,16 @@
 	</script>
 </head>
 <body>
-	<div id="startSelection" align="center">
-		<button onclick="startGame(false)" type="button">Start Game</button>
+	<div id="startSelection">
+		<button type="button" onclick="hostGame()">Host Game</button>
+		<button type="button" onclick="joinGame()">Join Game</button>
+		<br/>
+		<label for="roomNameLabel">Room Name: </label>
+		<input id="roomName" type="text" value=""><br>
+		
 	</div>
 	<div id="restartSelection" align="center">
-		<button onclick="startGame(false))" type="button">Restart Game</button>
+		<button onclick="startGame()" type="button">Restart Game</button>
 	</div>
 	<div id="gameBoard" align="center">
 		<canvas id="game" width="400" height="600" style="border:2px solid #000000;">
@@ -44,6 +49,9 @@
 	<script src='js/external/key_status.js'></script>
 	<script src='js/physics.js'></script>
 	<script src='js/renderer.js'></script>
+	<script src="https://webrtc-experiment.appspot.com/DataChannel.js"></script>
+	<script src='js/network.js'></script>
+
 
 </body>
 </html>

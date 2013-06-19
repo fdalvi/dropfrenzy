@@ -14,7 +14,7 @@ function Player (color) {
 		ctx.fillStyle = this.color;
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-		ctx.fillStyle = 'green';
+		ctx.fillStyle = color;
 		ctx.fill();
 		ctx.lineWidth = 2;
 		ctx.strokeStyle = '#003300';
@@ -30,7 +30,7 @@ function Ledge (x,y,length) {
 	this.width = length;
 	this.color = "#A00";
 	this.draw = function() {
-		ctx.fillStyle = this.color;;
+		ctx.fillStyle = this.color;
 		ctx.fillRect(this.x, this.y, this.width, this.height);
 	};
 	this.collides = function(somePlayer) {
@@ -51,26 +51,37 @@ function Ledge (x,y,length) {
 
 
 // Create collection to hold all ledges on screen
-var ledges = [];
+//var ledges = [];
 
 // Create collection to hold all players on screen
-var players = [];
-var player;
+
+//var player;
 //players.push(player);
 
 var bounds; 
 
-function initPhysics() {
+function initPhysics(multiplayerGame) {
 	gameSpeed = 2;
  	lowestLedge = -1; // No Ledge
 
 	// Create collection to hold all ledges on screen
 	ledges = [];
 
-	// Create collection to hold all players on screen
-	players = [];
-	player = new Player("#00A");
-	players.push(player);
+	// Create collection to hold all remote players on screen
+	remotePlayers = [];
+	player = new Player('green');
+	if(multiplayerGame)
+	{
+		isMultiplayerGame = true;
+		var newPlayer = new Player('yellow');
+		console.log("physics " + typeof(remotePlayers));
+		clientPlayer = new Player('yellow');
+		remotePlayers.push(newPlayer);
+
+	} else {
+		isMultiplayerGame = false;
+	}
+	//players.push(player);
 	bounds = {
 		hMax: canvasWidth-player.radius,
 		hMin: player.radius,
@@ -98,6 +109,25 @@ function handleCollisions()
 			}
 		}
 	});
+
+	if(isMultiplayerGame) {
+		var continueCheckCollisions = true;
+		ledges.forEach(function(currentLedge) {
+			if(continueCheckCollisions) {
+				if(currentLedge.collides(clientPlayer)) {
+					clientPlayer.y = currentLedge.y - clientPlayer.radius;
+					currentLedge.color = "#00A";
+					clientPlayer.canFall=false;
+
+					// Do not check with the rest of the ledges
+					continueCheckCollisions = false;
+				} else {
+					clientPlayer.canFall=true;
+					currentLedge.color = "#A00";
+				}
+			}
+		});
+	}
 }
 
 function updateElements()
@@ -164,6 +194,15 @@ function updateElements()
 		player.y += player.playerSpeed;
 	} else {
 		player.y -= gameSpeed + score/1000;
+	}
+
+	if(isMultiplayerGame) {
+		if(clientPlayer.canFall) {
+			clientPlayer.y += clientPlayer.playerSpeed;
+		} else {
+			clientPlayer.y -= gameSpeed + score/1000;
+		}
+
 	}
 
 	// Checking for boundaries

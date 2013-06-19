@@ -20,12 +20,12 @@ window.onload = function() {
 
 	});
 }
-function startGame() {
+function startGame(multiplayerGame) {
 	$("#startSelection").hide();
 	$("#restartSelection").hide();
 	$("#gameBoard").show();
 	// Initialize Game
-	initGame(); 
+	initGame(multiplayerGame); 
 
 	// Event Listeners for keys to avoid page scrolling
 	window.addEventListener('keydown',handleKeyDown,true); 
@@ -35,7 +35,7 @@ function startGame() {
 	animate();
 }
 
-function initGame(){
+function initGame(multiplayerGame){
 	messageY = 620;
 	keys = [];
 	gameEnded = false;
@@ -43,7 +43,7 @@ function initGame(){
 	score = 0;
 	endAnimationFinished = false;
 
-	initPhysics();
+	initPhysics(multiplayerGame);
 }
 
 
@@ -79,10 +79,22 @@ function renderCanvas()
 {
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 	if(!gameEnded)
+	{
 		player.draw();
+		//console.log("remote player x " + remotePlayers[0].x);
+		if(isMultiplayerGame) {
+			clientPlayer.x = remotePlayers[0].x;
+			clientPlayer.y = remotePlayers[0].y;
+			clientPlayer.draw();
+		}
+		//Player.prototype.draw.call(remotePlayers[0]);
+	}
+	//console.log(ledges.length);
 	ledges.forEach(function(currentLedge) {
 		currentLedge.draw();
 	});
+	if(isClient)
+		ledges = hostLedges;
 	drawScore();
 	if(gameEnded)
 		gameEnd();
