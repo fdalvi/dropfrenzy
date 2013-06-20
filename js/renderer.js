@@ -3,6 +3,9 @@ var FPS = 60;
 var messageY = 620;
 var endAnimationFinished;
 var gamePaused;
+var prevFrameTime;
+var currFrameTime;
+var currentFPS = 60;
 
 window.onload = function() {
 	$("#gameBoard").hide();
@@ -31,6 +34,7 @@ function startGame(multiplayerGame) {
 	window.addEventListener('keydown',handleKeyDown,true); 
 	window.addEventListener('keyup',handleKeyUp,true);
 	
+	prevFrameTime = (new Date()).getTime();
 	// Run game loop
 	animate();
 }
@@ -73,6 +77,12 @@ function animate() {
 		handleCollisions();
 	}
 	renderCanvas();
+
+	//Update FPS
+	currFrameTime = (new Date()).getTime();
+	currentFPS = ((1000/(currFrameTime - prevFrameTime)) | 0);
+	prevFrameTime = currFrameTime;
+
 }
 
 function renderCanvas()
@@ -96,6 +106,7 @@ function renderCanvas()
 	if(isClient)
 		ledges = hostLedges;
 	drawScore();
+	drawFPS();
 	if(gameEnded)
 		gameEnd();
 }
@@ -103,20 +114,30 @@ function renderCanvas()
 function drawScore()
 {
 	ctx.font = 'bold 16px Exo';
-	ctx.fillStyle = "black";
+	ctx.textAlign = 'left';
+	ctx.fillStyle = 'black';
 	ctx.fillText(score, 10, 20);
+}
+
+function drawFPS()
+{
+	ctx.font = 'bold 16px Exo';
+	ctx.textAlign = 'right';
+	ctx.fillStyle = 'lightgray';
+	ctx.fillText(currentFPS, 390, 20);
 }
 
 function gameEnd()
 {
 	ctx.font = 'bold 36px Exo';
-	ctx.fillStyle = "black";
+	ctx.textAlign = 'center';
+	ctx.fillStyle = 'black';
 	if(messageY < 280) {
-		ctx.fillText("The End!", 140, messageY);
+		ctx.fillText("The End!", 200, messageY);
 		endAnimationFinished = true;
 	}
 	else {
-		ctx.fillText("The End!", 140, messageY);
+		ctx.fillText("The End!", 200, messageY);
 		messageY -= 2;
 	}
 }
