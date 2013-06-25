@@ -3,27 +3,14 @@
 
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
-	<script type="text/javascript">
-	var ctx;
-	var canvasWidth;
-	var canvasHeight;
-	var gameEnded = false;
-	var score = 0;
-	var ledges = [];
-	var hostLedges = [];
-	var player;
-	var remotePlayers = [];
-	var clientPlayer;
-	var isClient = false;
-	var isMultiplayerGame = false;
-	</script>
+	<script src='js/helper.js'></script>
 </head>
 <body>
 	<div id="startSelection" align="center">
-		<button onclick="startGame(false)" type="button">Start Game</button>
+		<button onclick="startGame()" type="button">Start Game</button>
 	</div>
 	<div id="restartSelection" align="center">
-		<button onclick="startGame(false)" type="button">Restart Game</button>
+		<button onclick="startGame()" type="button">Restart Game</button>
 	</div>
 	<div id="gameBoard" align="center">
 		<canvas id="game" width="400" height="600" style="border:2px solid #000000;">

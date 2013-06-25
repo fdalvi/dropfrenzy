@@ -5,7 +5,6 @@ var endAnimationFinished;
 var gamePaused;
 var prevFrameTime;
 var currFrameTime;
-var currentFPS = 60;
 
 window.onload = function() {
 	$("#gameBoard").hide();
@@ -23,31 +22,34 @@ window.onload = function() {
 
 	});
 }
-function startGame(multiplayerGame) {
+
+function startGame() {
 	$("#startSelection").hide();
 	$("#restartSelection").hide();
 	$("#gameBoard").show();
 	// Initialize Game
-	initGame(multiplayerGame); 
+	initGame(); 
 
 	// Event Listeners for keys to avoid page scrolling
 	window.addEventListener('keydown',handleKeyDown,true); 
 	window.addEventListener('keyup',handleKeyUp,true);
 	
 	prevFrameTime = (new Date()).getTime();
+
 	// Run game loop
 	animate();
 }
 
-function initGame(multiplayerGame){
+function initGame(){
 	messageY = 620;
 	keys = [];
 	gameEnded = false;
 	gamePaused = false;
 	score = 0;
 	endAnimationFinished = false;
+	gameFrame = 0;
 
-	initPhysics(multiplayerGame);
+	initPhysics();
 }
 
 
@@ -59,18 +61,17 @@ window.requestAnimFrame = (function(callback) {
 })();
 
 function animate() {
+	gameFrame++;
+
 	if(!(gameEnded && noLedgesLeft() && endAnimationFinished)) {
 		if(!gamePaused) {
 			requestAnimFrame(function() {
 				animate();
 			});
-
 		}
 	} else { 
 		$("#restartSelection").show();
 	}
-
-
 
 	updateElements();
 	if(!gameEnded) {
@@ -81,6 +82,7 @@ function animate() {
 	//Update FPS
 	currFrameTime = (new Date()).getTime();
 	currentFPS = ((1000/(currFrameTime - prevFrameTime)) | 0);
+	hostDeltaTime = 60.0/currentFPS;
 	prevFrameTime = currFrameTime;
 
 }
@@ -91,20 +93,17 @@ function renderCanvas()
 	if(!gameEnded)
 	{
 		player.draw();
-		//console.log("remote player x " + remotePlayers[0].x);
 		if(isMultiplayerGame) {
-			clientPlayer.x = remotePlayers[0].x;
-			clientPlayer.y = remotePlayers[0].y;
-			clientPlayer.draw();
+			remotePlayer.x = remotePlayers[0].x;
+			remotePlayer.y = remotePlayers[0].y;
+			remotePlayer.canFall = remotePlayers[0].canFall;
+			remotePlayer.draw();
+			
 		}
-		//Player.prototype.draw.call(remotePlayers[0]);
 	}
-	//console.log(ledges.length);
 	ledges.forEach(function(currentLedge) {
 		currentLedge.draw();
 	});
-	if(isClient)
-		ledges = hostLedges;
 	drawScore();
 	drawFPS();
 	if(gameEnded)
@@ -134,10 +133,16 @@ function gameEnd()
 	ctx.fillStyle = 'black';
 	if(messageY < 280) {
 		ctx.fillText("The End!", 200, messageY);
+		if(isMultiplayerGame) {
+			ctx.fillText(endMessage, 200, messageY + 45);
+		}
 		endAnimationFinished = true;
 	}
 	else {
 		ctx.fillText("The End!", 200, messageY);
+		if(isMultiplayerGame) {
+			ctx.fillText(endMessage, 200, messageY + 45);
+		}
 		messageY -= 2;
 	}
 }
