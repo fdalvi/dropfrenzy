@@ -7,7 +7,7 @@ var prevFrameTime;
 var currFrameTime;
 
 window.onload = function() {
-	$("#gameBoard").hide();
+	//$("#gameBoard").hide();
 	$("#restartSelection").hide();
 
 	$(document).bind('keydown', 'space', function () {

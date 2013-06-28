@@ -60,7 +60,7 @@ function initPhysics() {
 	ledges = [];
 
 	// Create Local Player
-	player = new Player('green');
+	player = new Player(playerColor);
 
 	// Create collection to hold all remote players on screen
 	remotePlayers = [];

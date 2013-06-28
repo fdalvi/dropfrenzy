@@ -1,0 +1,49 @@
+.overlay {
+	z-index: 1;
+	margin-top: -450px;
+}
+
+.button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background-color:#ff6600;
+	border:1px solid #dbdbdb;
+	color:#ffffff;
+	font-family: 'Open Sans', sans-serif;
+	font-size:25px;
+	font-weight: 300;
+	text-align: center;
+	padding:10px 30px;
+	text-decoration:none;
+	
+
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	width: 15%;
+}
+
+.button:hover {
+	background-color:#dfdfdf;
+}
+
+.button:active {
+	position:relative;
+	top:1px;
+}
+
+.colorbutton {
+	border:2px solid #000000;
+	padding:0px 10px;
+	margin-right: 4px;
+}
+
+.colorbutton:hover {
+	border-color: #444444;
+}
+
+.colorbuttonselected {
+	border:4px solid #000000;
+}

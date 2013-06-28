@@ -16,6 +16,7 @@ var hostDeltaTime = 1.0;
 /* Internal objects */
 var ledges = [];
 var player;
+var playerColor = 'green';
 
 /* Multiplayer related objects */
 var remotePlayers = [];

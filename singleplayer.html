@@ -3,19 +3,40 @@
 
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/gamepage.css">
+
 	<script src='js/helper.js'></script>
+	<script type="text/javascript">
+	function setColor(newColor) {
+		document.getElementById(newColor).className = document.getElementById(newColor).className + " colorbuttonselected";
+
+		document.getElementById(playerColor).className = document.getElementById(playerColor).className.replace(" colorbuttonselected", "");
+
+		playerColor = newColor;
+	}
+	</script>
 </head>
 <body>
-	<div id="startSelection" align="center">
-		<button onclick="startGame()" type="button">Start Game</button>
-	</div>
-	<div id="restartSelection" align="center">
-		<button onclick="startGame()" type="button">Restart Game</button>
-	</div>
+	
 	<div id="gameBoard" align="center">
+		
 		<canvas id="game" width="400" height="600" style="border:2px solid #000000;">
 			Your browser does not support the HTML5 canvas tag.
 		</canvas>
+		<div id="startSelection" class='overlay' align="center">
+			<a href='#' onclick='startGame();' id='startButton' class='button'>Start Game</a>
+			<div id='colorSelection' align='center'>
+				<a href='#' onclick="setColor('green');" id='green' style='background-color:green;' class='colorbutton colorbuttonselected'></a>
+				<a href='#' onclick="setColor('red');" id='red' style='background-color:red;' class='colorbutton'></a>
+				<a href='#' onclick="setColor('yellow');" id='yellow' style='background-color:yellow;' class='colorbutton'></a>
+				<a href='#' onclick="setColor('blue');" id='blue' style='background-color:blue;' class='colorbutton'></a>
+				<a href='#' onclick="setColor('gray');" id='gray' style='background-color:gray;' class='colorbutton'></a>
+			</div>
+		</div>
+		<div id="restartSelection" class='overlay' align="center">
+			<a href='#' onclick='startGame();' id='startButton' class='button'>Restart Game</a>
+		</div>
 	</div>
 
 	<script type="text/javascript">
