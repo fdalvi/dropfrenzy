@@ -71,6 +71,7 @@ function animate() {
 		}
 	} else { 
 		$("#restartSelection").show();
+		addNewScore(score);
 	}
 
 	updateElements();

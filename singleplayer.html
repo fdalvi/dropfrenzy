@@ -7,6 +7,11 @@
 	<link rel="stylesheet" type="text/css" href="css/gamepage.css">
 
 	<script src='js/helper.js'></script>
+	<script src='js/external/jquery.min.js'></script>
+	<script src='js/external/jquery.hotkeys.js'></script>
+	<script src='js/external/key_status.js'></script>
+	<script src='js/highscores.js'></script>
+
 	<script type="text/javascript">
 	function setColor(newColor) {
 		document.getElementById(newColor).className = document.getElementById(newColor).className + " colorbuttonselected";
@@ -18,14 +23,13 @@
 	</script>
 </head>
 <body>
-	
-	<div id="gameBoard" align="center">
-		
+	<div id="gameBoard" class='gameboard'>	
 		<canvas id="game" width="400" height="600" style="border:2px solid #000000;">
 			Your browser does not support the HTML5 canvas tag.
 		</canvas>
 		<div id="startSelection" class='overlay' align="center">
-			<a href='#' onclick='startGame();' id='startButton' class='button'>Start Game</a>
+			<img class='logo' src='img/logo.png' alt='DropFrenzy'/>
+			<p class='OpenSansText'>Choose your color</p>
 			<div id='colorSelection' align='center'>
 				<a href='#' onclick="setColor('green');" id='green' style='background-color:green;' class='colorbutton colorbuttonselected'></a>
 				<a href='#' onclick="setColor('red');" id='red' style='background-color:red;' class='colorbutton'></a>
@@ -33,12 +37,83 @@
 				<a href='#' onclick="setColor('blue');" id='blue' style='background-color:blue;' class='colorbutton'></a>
 				<a href='#' onclick="setColor('gray');" id='gray' style='background-color:gray;' class='colorbutton'></a>
 			</div>
+			<a href='#' onclick='startGame();' id='startButton' class='button'>Start Game</a>
+			<div id="scoreSelection">
+				<hr>
+				<p class='OpenSansText'><b><u>Local Highscores</u></b></p>
+				<div class='clearbutton'>
+					<button class='circle OpenSansText' onclick='clearScores();'><p style='margin-top: -4px; margin-left: -1px;'>x</p></button>
+					<p class='OpenSansText' style='font-size:10px; margin-top: 4px;'>&nbsp Clear</p>
+				</div>
+				
+				<table border="2">
+					<tr>
+						<td class='OpenSansText'>1</td>
+						<td class='OpenSansText highscore1' width='100px;'> - </td>
+						<td class='OpenSansText highscore1_time' width='225px;'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>2</td>
+						<td class='OpenSansText highscore2' width='100px;'> - </td>
+						<td class='OpenSansText highscore2_time' width='225px;'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>3</td>
+						<td class='OpenSansText highscore3' width='100px;'> - </td>
+						<td class='OpenSansText highscore3_time' width='225px;'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>4</td>
+						<td class='OpenSansText highscore4' width='100px;'> - </td>
+						<td class='OpenSansText highscore4_time' width='225px;'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>5</td>
+						<td class='OpenSansText highscore5' width='100px;'> - </td>
+						<td class='OpenSansText highscore5_time' width='225px;'> - </td>
+					</tr>
+				</table>
+
+			</div>
 		</div>
 		<div id="restartSelection" class='overlay' align="center">
 			<a href='#' onclick='startGame();' id='startButton' class='button'>Restart Game</a>
+			<br/>
+			<br/>
+			<br/>
+			<div id="scoreSelection">
+				<hr>
+				<p class='OpenSansText'><b><u>Local Highscores</u></b></p>
+				<table border="2">
+					<tr>
+						<td class='OpenSansText'>1</td>
+						<td class='OpenSansText highscore1' width='100px;'> - </td>
+						<td class='OpenSansText highscore1_time'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>2</td>
+						<td class='OpenSansText highscore2' width='100px;'> - </td>
+						<td class='OpenSansText highscore2_time'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>3</td>
+						<td class='OpenSansText highscore3' width='100px;'> - </td>
+						<td class='OpenSansText highscore3_time'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>4</td>
+						<td class='OpenSansText highscore4' width='100px;'> - </td>
+						<td class='OpenSansText highscore4_time'> - </td>
+					</tr>
+					<tr>
+						<td class='OpenSansText'>5</td>
+						<td class='OpenSansText highscore5' width='100px;'> - </td>
+						<td class='OpenSansText highscore5_time'> - </td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
-
 	<script type="text/javascript">
 	// Grabbing reference to Canvas
 	var canvas = document.getElementById('game');
@@ -46,10 +121,9 @@
 	ctx = canvas.getContext('2d');
 	canvasWidth = parseInt(canvas.width);
 	canvasHeight = parseInt(canvas.height);
+
+	initScores();
 	</script>
-	<script src='js/external/jquery.min.js'></script>
-	<script src='js/external/jquery.hotkeys.js'></script>
-	<script src='js/external/key_status.js'></script>
 	<script src='js/physics.js'></script>
 	<script src='js/renderer.js'></script>
 
